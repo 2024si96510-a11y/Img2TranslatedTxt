@@ -1,6 +1,6 @@
 # Python Project
 
-A Python project with proper structure and organization.
+A Python project to extract the content of input image and translate the text in requested language.
 
 ## Project Structure
 
