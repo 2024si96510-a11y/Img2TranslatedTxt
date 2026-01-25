@@ -39,9 +39,7 @@ python src/main.py
 ## Testing
 
 Run tests:
-```bash
-pytest tests/
-```
+- TBD
 
 ## Development
 
@@ -53,4 +51,4 @@ This project follows Python best practices:
 
 ## License
 
-MIT License
+This project is licensed under the Apache License, Version 2.0 - see the [LICENSE.md](LICENSE.md) file for details
