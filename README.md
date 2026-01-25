@@ -32,10 +32,15 @@ A Python project to extract the content of input image and translate the text in
 ## Usage
 
 Run the main application:
-```bash
-python src/main.py
-```
-
+1. Extract the content in image without translation (English)
+   ```bash
+   python src/main.py <image_path>
+   ```
+2. Extract the content in image with translation (Hindi(hi), German(de), French(fr), etc.)
+   ```bash
+   python src/main.py <image_path> <hi/en/fr/de/..>
+   ```
+   
 ## Testing
 
 Run tests:
