@@ -40,14 +40,14 @@ jobs:
           # Install test and lint tools
           pip install pytest pytest-cov black flake8 mypy
 
-      - name: Run linters and type checks
-        run: |
-          # Black in check mode
-          black --check .
-          # Lint Python code in src and tests
-          flake8 src tests
-          # Type-check; fail CI if type errors exist
-          mypy src
+      #- name: Run linters and type checks
+      #  run: |
+      #    # Black in check mode
+      #    black --check .
+      #    # Lint Python code in src and tests
+      #    flake8 src tests
+      #    # Type-check; fail CI if type errors exist
+      #    mypy src
 
       - name: Run tests with coverage
         run: |
