@@ -1,6 +1,6 @@
 # Python Project
 
-A Python project to extract the content of input image and translate the text in requested language.
+A Python project to extract the content of input images and translate the detected text into a requested language. Now featuring a web-based GUI for easier interaction.
 
 ## Project Structure
 
@@ -8,6 +8,7 @@ A Python project to extract the content of input image and translate the text in
 .
 ├── src/              # Source code
 ├── tests/            # Test files
+├── app.py            # Streamlit Web Application (GUI)
 ├── .gitignore        # Git ignore patterns
 ├── pyproject.toml    # Project configuration
 └── README.md         # This file
@@ -26,21 +27,46 @@ A Python project to extract the content of input image and translate the text in
 
 3. Install dependencies:
    ```bash
+   # Install core project and CLI dependencies
    pip install -e .
+   # Install additional UI and Image Processing dependencies
+   pip install streamlit opencv-python pillow deep-translator easyocr
    ```
 
 ## Usage
 
 Run the main application:
-1. Extract the content in image without translation (English)
-   ```bash
+
+1. Web Application (Recommended)
+
+   The project now includes a Web UI for a more interactive experience, featuring OpenCV image cleaning and a language dropdown.
+
+   Run the Streamlit app:
+
+   streamlit run app.py
+
+
+Features: - Drag-and-drop image uploading.
+
+   OpenCV Pre-processing: Toggle "OpenCV Clean" to improve OCR accuracy on noisy images.
+
+Language Selection: Choose from Hindi, Spanish, French, Japanese, Arabic, or English.
+
+Download Result: Export your translations directly as a .txt file.
+
+2. Command Line Interface (CLI)
+
+   You can still run the script directly from the terminal.
+
+Extract text only (English):
+
    python src/main.py <image_path>
-   ```
-2. Extract the content in image with translation (Hindi(hi), German(de), French(fr), etc.)
-   ```bash
-   python src/main.py <image_path> <hi/en/fr/de/..>
-   ```
-   
+
+
+Extract and Translate:
+
+   python src/main.py <image_path> <hi/es/fr/ja/ar/en>
+
 ## Testing
 
 The project includes unit tests for each image processing scenario. Each test file validates text extraction for specific images.
@@ -97,6 +123,7 @@ This project follows Python best practices:
 - Type hints where appropriate
 - Comprehensive unit tests
 - Clear documentation
+- Uses OpenCV for Gaussian Thresholding to handle varied lighting in images.
 
 ## License
 
