@@ -1,0 +1,14 @@
+{
+  "name": "freestack_img2translatedtxt_package.json",
+  "version": "0.0.0",
+  "description": "Minimal npm package placeholder for Img2TranslatedTxt repository.",
+  "main": "index.js",
+  "license": "Apache-2.0",
+  "files": [
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/2024si96510-a11y/Img2TranslatedTxt.git"
+  }
+}

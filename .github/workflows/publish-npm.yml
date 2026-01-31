@@ -1,0 +1,71 @@
+name: Publish npm package
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      test_tag:
+        description: 'Test version tag (e.g., v1.0.0-test)'
+        required: true
+        default: 'v0.0.0-test'
+      dry_run:
+        description: 'Dry run (skip actual publish)'
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ensure NPM token is present (skip publish if not)
+        run: |
+          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+            echo "NPM_TOKEN not set. Skipping npm publish."
+            exit 0
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+          always-auth: true
+
+      - name: Configure npm auth
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
+
+      - name: Set package version from tag
+        shell: bash
+        run: |
+          # GITHUB_REF looks like refs/tags/v1.2.3 or refs/tags/1.2.3
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            tag="${{ github.event.inputs.test_tag }}"
+          else
+            tag=${GITHUB_REF#refs/tags/}
+          fi
+          tag=${tag#v}
+          if [ -z "$tag" ]; then
+            echo "No tag found in GITHUB_REF: $GITHUB_REF"
+            exit 1
+          fi
+          echo "Setting package.json version to: $tag"
+          npm version "$tag" --no-git-tag-version
+
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            echo "DRY RUN: Would publish with: npm publish --access public"
+            npm pack
+          else
+            npm publish --access public
+          fi
