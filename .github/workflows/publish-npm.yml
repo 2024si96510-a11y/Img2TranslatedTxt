@@ -34,13 +34,10 @@ jobs:
         with:
           node-version: '18'
           registry-url: 'https://registry.npmjs.org'
-          always-auth: true
 
       - name: Configure npm auth
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
+          npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
 
       - name: Set package version from tag
         shell: bash
@@ -60,12 +57,13 @@ jobs:
           npm version "$tag" --no-git-tag-version
 
       - name: Publish to npm
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             echo "DRY RUN: Would publish with: npm publish --access public"
             npm pack
           else
             npm publish --access public
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           fi
