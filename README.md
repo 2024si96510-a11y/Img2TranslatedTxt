@@ -5,12 +5,17 @@ A Python project to extract the content of input image and translate the text in
 ## Project Structure
 
 ```
-.
-├── src/              # Source code
-├── tests/            # Test files
-├── .gitignore        # Git ignore patterns
-├── pyproject.toml    # Project configuration
-└── README.md         # This file
+Img2TranslatedTxt/
+├── .github/             # GitHub Actions CI workflows
+├── src/                 # Core application source code
+├── tests/               # Test cases for the project
+├── uploads/             # Uploaded/input images used for processing
+├── .gitignore           # Git ignore patterns/rules
+├── CHANGELOG.md         # Version-wise changes and release notes
+├── CONTRIBUTING.md      # Contribution guidelines
+├── LICENSE.md           # Open-source license
+├── pyproject.toml       # Project metadata and dependencies
+└── README.md            # Project documentation
 ```
 
 ## Setup
