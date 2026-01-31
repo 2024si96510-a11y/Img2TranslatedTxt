@@ -3,6 +3,17 @@ name: Publish npm package
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      test_tag:
+        description: 'Test version tag (e.g., v1.0.0-test)'
+        required: true
+        default: 'v0.0.0-test'
+      dry_run:
+        description: 'Dry run (skip actual publish)'
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   publish:
@@ -35,7 +46,11 @@ jobs:
         shell: bash
         run: |
           # GITHUB_REF looks like refs/tags/v1.2.3 or refs/tags/1.2.3
-          tag=${GITHUB_REF#refs/tags/}
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            tag="${{ github.event.inputs.test_tag }}"
+          else
+            tag=${GITHUB_REF#refs/tags/}
+          fi
           tag=${tag#v}
           if [ -z "$tag" ]; then
             echo "No tag found in GITHUB_REF: $GITHUB_REF"
@@ -47,4 +62,10 @@ jobs:
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            echo "DRY RUN: Would publish with: npm publish --access public"
+            npm pack
+          else
+            npm publish --access public
+          fi
